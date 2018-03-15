@@ -53,4 +53,42 @@ function isAuthenticated($token_fn,$conn_fn) {
       return false;
     }   
 }
+
+function isSlamName($slamname_fn,$conn_fn) {
+    $sql = "SELECT * FROM slampages where slamname='$slamname_fn'";
+    $result = $conn_fn->query($sql);
+    if ($result->num_rows > 0) {
+       return true;
+    } else {
+      return false;
+    }  
+}
+
+function getUidByUsername($username_fn,$conn_fn) {
+    $sql = "SELECT uid FROM userdata WHERE username='$username_fn'";
+    $result = $conn_fn->query($sql);
+    if ($result->num_rows > 0) {
+        $uid = null ;
+        while($row = $result->fetch_assoc()) {
+            $uid = $row["uid"] ;
+        }
+        return $uid;
+    } else {
+        return null;
+    }
+}
+
+function getContentByUid($uid_fn,$slamname_fn,$conn_fn) {
+    $sql = "SELECT spid,content FROM slampages WHERE uid='$uid_fn' and slamname='$slamname_fn'";
+    $result = $conn_fn->query($sql);
+    if ($result->num_rows > 0) {
+        $data = null ;
+        while($row = $result->fetch_assoc()) {
+            $data = $row ;
+        }
+        return $data;
+    } else {
+        return null;
+    }
+}
 ?>

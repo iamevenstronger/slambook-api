@@ -38,6 +38,11 @@ if ($conn->query($sql) === TRUE) {
         $token_uuid,
         time() + (10 * 365 * 24 * 60 * 60)
     );
+    setcookie(
+        "slam_uid",
+        getUidByUsername($username,$conn),
+        time() + (10 * 365 * 24 * 60 * 60)
+    );
     $resp["success"] = true ;
     $resp["uid"] = $uid ;
     $resp["username"] = $username ;

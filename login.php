@@ -27,7 +27,11 @@ setcookie(
     $token_uuid,
     time() + (10 * 365 * 24 * 60 * 60)
 );
-
+setcookie(
+    "slam_uid",
+    getUidByUsername($username,$conn),
+    time() + (10 * 365 * 24 * 60 * 60)
+);
 $sql = "UPDATE userdata SET token='$token_uuid' WHERE username='$username' and password='$password'";
 
 if ($conn->query($sql) === TRUE) {
