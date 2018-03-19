@@ -5,7 +5,7 @@ require 'Utils.php';
 
 if(!isset($_GET['username']) || !isset($_GET['password'])) {
     $resp["success"] = false ;
-    $resp["error_in"] = "username/passowrd" ;
+    $resp["error_in"] = "username/password" ;
     $resp["message"] = "Enter All Credentials!" ;
     sendResponse($resp);
     die();
@@ -16,7 +16,7 @@ $password = filter_var($_GET['password'],FILTER_SANITIZE_STRING);
 
 if(!isLogin($username,$password,$conn)) {
     $resp["success"] = false ;
-    $resp["error_in"] = "username/passowrd" ;
+    $resp["error_in"] = "username/password" ;
     $resp["message"] = "Wrong Credentials!" ;
     sendResponse($resp);
     die();
@@ -39,6 +39,7 @@ if ($conn->query($sql) === TRUE) {
     $resp["success"] = true ;
     $resp["username"] = $username ;
     $resp["token"] = $token_uuid ;
+    $resp["uid"] = getUidByUsername($username,$conn) ;
     $resp["message"] = "Successfully Logged In!" ;
     sendResponse($resp);
 } else {
