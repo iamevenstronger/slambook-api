@@ -28,6 +28,11 @@ if ($result->num_rows > 0) {
     $slamwrites = array();
     while($row = $result->fetch_assoc()) {
         $row["content"] = json_decode($row["content"]);
+        if(!$row["uid"] || $row["uid"] == null) {
+            $row["username"] = 'Anonymous' ;
+        } else {
+            $row["username"] = getUsernameByUid($row["uid"],$conn);
+        }
         array_push($slamwrites,$row);
     }
     $resp["success"] = true ;

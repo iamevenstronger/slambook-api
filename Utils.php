@@ -78,6 +78,20 @@ function getUidByUsername($username_fn,$conn_fn) {
     }
 }
 
+function getUsernameByUid($uid_fn,$conn_fn) {
+    $sql = "SELECT username FROM userdata WHERE uid='$uid_fn'";
+    $result = $conn_fn->query($sql);
+    if ($result->num_rows > 0) {
+        $username = null ;
+        while($row = $result->fetch_assoc()) {
+            $username = $row["username"] ;
+        }
+        return $username;
+    } else {
+        return null;
+    }
+}
+
 function getContentByUid($uid_fn,$slamname_fn,$conn_fn) {
     $sql = "SELECT spid,content FROM slampages WHERE uid='$uid_fn' and slamname='$slamname_fn'";
     $result = $conn_fn->query($sql);

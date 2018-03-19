@@ -11,6 +11,13 @@ if(!isset($_GET['token']) || !isset($_GET['uid']) || !isset($_GET['content']) ||
     die();
 }
 
+if(!$_GET['slamname'] || !$_GET['slamdescription']) {
+    $resp["success"] = false ;
+    $resp["error_in"] = "keycontents" ;
+    $resp["message"] = "Enter All Credentials!" ;
+    sendResponse($resp);
+    die();  
+}
 $content = json_decode($_GET['content']);
 $uid = filter_var($_GET['uid'],FILTER_SANITIZE_STRING);
 $token = filter_var($_GET['token'],FILTER_SANITIZE_STRING);
@@ -51,7 +58,7 @@ if ($conn->query($sql) === TRUE) {
     $resp["slamdescription"] = $slamdescription ;
     $resp["content"] = json_decode($content) ;
     $resp["uid"] = $uid ;
-    $resp["message"] = "Slamwrite Done!" ;
+    $resp["message"] = "Slampage Successfuly Created!" ;
     sendResponse($resp);
 } else {
     $resp["success"] = false ;
