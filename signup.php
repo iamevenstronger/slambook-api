@@ -1,4 +1,5 @@
 <?php
+ header('Access-Control-Allow-Origin: *');  
 require 'connection.php';
 require 'Utils.php';
 
@@ -17,7 +18,7 @@ if(!isset($_GET['password']) || strlen(filter_var($_GET['password'],FILTER_SANIT
     die();
 }
 
-if(isEmailExists(filter_var($_GET['email'],FILTER_SANITIZE_EMAIL),$conn) || !isset($_GET['email'])) {
+if(isEmailExists(filter_var($_GET['email'],FILTER_SANITIZE_EMAIL),$conn) || !isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
     $resp["success"] = false ;
     $resp["error_in"] = "email" ;
     $resp["message"] = "Enter valid email!" ;

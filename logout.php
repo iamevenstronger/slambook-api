@@ -1,4 +1,5 @@
 <?php
+ header('Access-Control-Allow-Origin: *');  
 require 'Utils.php';
 
 if (isset($_COOKIE['slam_token'])) {
