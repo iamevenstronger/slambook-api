@@ -21,7 +21,7 @@ if(!$_GET['slamname'] || !$_GET['slamdescription']) {
 $content = json_decode($_GET['content']);
 $uid = filter_var($_GET['uid'],FILTER_SANITIZE_STRING);
 $token = filter_var($_GET['token'],FILTER_SANITIZE_STRING);
-$slamdescription = filter_var($_GET['slamdescription'],FILTER_SANITIZE_STRING) ;
+$slamdescription = stripScript($_GET['slamdescription']) ;
 $slamname = filter_var($_GET['slamname'],FILTER_SANITIZE_STRING) ;
 
 if(!isAuthenticated($token,$conn)) {
@@ -71,5 +71,16 @@ $conn->close();
 
 function isLimitCustom($customfields_fn) {
     return (count($customfields_fn)<=20)?true:false;
+}
+
+function stripScript($html) {
+$doc = new DOMDocument();
+$doc->loadHTML($html);
+$script_tags = $doc->getElementsByTagName('script');
+$length = $script_tags->length;
+for ($i = 0; $i < $length; $i++) {
+  $script_tags->item($i)->parentNode->removeChild($script_tags->item($i));
+}
+ return $doc->saveHTML();
 }
 ?>
