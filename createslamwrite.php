@@ -60,7 +60,7 @@ $conn->close();
 
 
 function isKeysValid($content_fn,$custom_string) {
-    $key_arr = array("nickname","first meet","first fight","Tell me about something","link dedicated to me","your location","customfields");
+    $key_arr = array("nickname","first meet","first fight","tell me about something","link dedicated to me","your location","customfields");
     for($i = 0 ; $i < 7 ; $i++) {
         if(!array_key_exists($key_arr[$i],$content_fn)) {
             return false;

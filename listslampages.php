@@ -31,6 +31,7 @@ if ($result->num_rows > 0) {
         array_push($slampages,$row);
     }
     $resp["success"] = true ;
+    $resp["username"] = getUsernameByUid($uid,$conn);
     $resp["data"] = $slampages ;
     sendResponse($resp);  
 } else {

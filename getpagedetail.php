@@ -3,17 +3,17 @@
 require 'connection.php';
 require 'Utils.php';
 
-if(!isset($_GET['spid'])) {
+if(!isset($_GET['slamname'])) {
     $resp["success"] = false ;
-    $resp["error_in"] = "spid" ;
-    $resp["message"] = "spid needed!" ;
+    $resp["error_in"] = "slamname" ;
+    $resp["message"] = "slamname needed!" ;
     sendResponse($resp);
     die();
 }
 
-$spid = filter_var($_GET['spid'],FILTER_SANITIZE_STRING);
+$slamname = filter_var($_GET['slamname'],FILTER_SANITIZE_STRING);
 
-$sql = "SELECT content FROM slampages WHERE spid='$spid'";
+$sql = "SELECT * FROM slampages WHERE slamname='$slamname'";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     $slamcustomfields = null;
@@ -31,7 +31,7 @@ if ($result->num_rows > 0) {
     sendResponse($resp);  
 } else {
     $resp["success"] = false ;
-    $resp["message"] = "Invalid spid!" ;
+    $resp["message"] = "Invalid slamname!" ;
     sendResponse($resp); 
 }
 $conn->close();
