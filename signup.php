@@ -18,7 +18,7 @@ if(!isset($_GET['password']) || strlen(filter_var($_GET['password'],FILTER_SANIT
     die();
 }
 
-if(isEmailExists(filter_var($_GET['email'],FILTER_SANITIZE_EMAIL),$conn) || !isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
+if(isEmailExists(filter_var($_GET['email'],FILTER_SANITIZE_STRING),$conn) || !isset($_GET['email']) || !filter_var(filter_var($_GET['email'],FILTER_SANITIZE_STRING), FILTER_VALIDATE_EMAIL)) {
     $resp["success"] = false ;
     $resp["error_in"] = "email" ;
     $resp["message"] = "Enter valid email!" ;
