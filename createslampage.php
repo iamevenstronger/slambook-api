@@ -18,6 +18,13 @@ if(!$_GET['slamname'] || !$_GET['slamdescription']) {
     sendResponse($resp);
     die();  
 }
+if(isInvalidString(filter_var($_GET['slamname'],FILTER_SANITIZE_STRING))){
+    $resp["success"] = false ;
+    $resp["error_in"] = "slamname" ;
+    $resp["message"] = "slamname should'nt have space or special chars(/[\'\"^£$%&*()}{@#~?><>,|=+¬-]/)" ;
+    sendResponse($resp);
+    die();
+}
 $content = json_decode($_GET['content']);
 $uid = filter_var($_GET['uid'],FILTER_SANITIZE_STRING);
 $token = filter_var($_GET['token'],FILTER_SANITIZE_STRING);
@@ -32,6 +39,13 @@ if(!isAuthenticated($token,$conn)) {
     die();
 }
 
+if(!isNewSlam($uid,$slamname,$conn)) {
+    $resp["success"] = false ;
+    $resp["error_in"] = "slamname" ;
+    $resp["message"] = "Slamname already exists!" ;
+    sendResponse($resp);
+    die();
+}
 if(!isLimitCustom($content->customfields)) {
     $resp["success"] = false ;
     $resp["error_in"] = "customfields" ;

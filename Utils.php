@@ -105,4 +105,17 @@ function getContentByUid($uid_fn,$slamname_fn,$conn_fn) {
         return null;
     }
 }
+
+function isNewSlam($uid_fn,$slamname_fn,$conn_fn) {
+    $sql = "SELECT spid FROM slampages WHERE uid='$uid_fn' and slamname='$slamname_fn'";
+    $result = $conn_fn->query($sql);
+    if ($result->num_rows > 0) {
+        return false;
+    }
+    return true;
+}
+
+function isInvalidString($str){
+    return !preg_match('/^[a-zA-Z_]+$/',$str);
+}
 ?>

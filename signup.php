@@ -10,6 +10,15 @@ if(!isset($_GET['username']) || strlen(filter_var($_GET['username'],FILTER_SANIT
     sendResponse($resp);
     die();
 }
+
+if(isInvalidString(filter_var($_GET['username'],FILTER_SANITIZE_STRING))){
+    $resp["success"] = false ;
+    $resp["error_in"] = "username" ;
+    $resp["message"] = "username should'nt have space or special chars(/[\'\"^£$%&*()}{@#~?><>,|=+¬-]/)" ;
+    sendResponse($resp);
+    die();
+}
+
 if(!isset($_GET['password']) || strlen(filter_var($_GET['password'],FILTER_SANITIZE_STRING))<4 || strlen(filter_var($_GET['password'],FILTER_SANITIZE_STRING))>32) {
     $resp["success"] = false ;
     $resp["error_in"] = "password" ;
@@ -18,7 +27,7 @@ if(!isset($_GET['password']) || strlen(filter_var($_GET['password'],FILTER_SANIT
     die();
 }
 
-if(isEmailExists(filter_var($_GET['email'],FILTER_SANITIZE_STRING),$conn) || !isset($_GET['email']) || !filter_var(filter_var($_GET['email'],FILTER_SANITIZE_STRING), FILTER_VALIDATE_EMAIL)) {
+if(isEmailExists(filter_var($_GET['email'],FILTER_SANITIZE_EMAIL),$conn) || !isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
     $resp["success"] = false ;
     $resp["error_in"] = "email" ;
     $resp["message"] = "Enter valid email!" ;
