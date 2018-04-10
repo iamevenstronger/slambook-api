@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.6
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Apr 09, 2018 at 06:42 PM
--- Server version: 10.1.29-MariaDB
--- PHP Version: 7.2.0
+-- Host: 127.0.0.1
+-- Generation Time: Mar 15, 2018 at 08:21 PM
+-- Server version: 10.1.26-MariaDB
+-- PHP Version: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -33,10 +33,16 @@ CREATE TABLE `slampages` (
   `spid` varchar(36) NOT NULL,
   `slamname` varchar(36) NOT NULL,
   `slamdescription` text NOT NULL,
-  `content` text NOT NULL,
-  `createdat` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deletedat` tinyint(4) NOT NULL DEFAULT '0'
+  `content` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `slampages`
+--
+
+INSERT INTO `slampages` (`uid`, `spid`, `slamname`, `slamdescription`, `content`) VALUES
+('37327314-08ef-4a4d-b311-0183061b9182', '414f4082-2822-11e8-99d8-c89cdca46351', 'haribalaji', 'Its is for test', '{\"customfields\": [\"age\",\"fname\",\"mname\"]}'),
+('37327314-08ef-4a4d-b311-0183061b9182', 'e4dee299-0ad9-4a05-838c-fa71e7f3968f', 'haribalaji', 'tst desc', '{\"customfields\": [\"age\",\"fname\",\"mname\"]}');
 
 -- --------------------------------------------------------
 
@@ -48,10 +54,15 @@ CREATE TABLE `slamwrites` (
   `swid` varchar(36) NOT NULL,
   `spid` varchar(36) NOT NULL,
   `uid` varchar(36) DEFAULT NULL,
-  `content` text NOT NULL,
-  `createdat` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deletedat` tinyint(4) NOT NULL DEFAULT '0'
+  `content` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `slamwrites`
+--
+
+INSERT INTO `slamwrites` (`swid`, `spid`, `uid`, `content`) VALUES
+('66a8e303-2822-11e8-99d8-c89cdca46351', '414f4082-2822-11e8-99d8-c89cdca46351', '37327314-08ef-4a4d-b311-0183061b9182', '{\"nickname\":\"hari\",\"first meet\":\"bus\",\"first fight\":\"cllg\",\"Tell me about something\":\"goodguy\",\"link dedicated to me\":\"http://google.com\",\"your location\":{\"long\":234.43,\"lat\":23.443},\"customfields\":{\"age\":\"21\",\"fname\":\"ravi\",\"mname\":\"sasi\"}}');
 
 -- --------------------------------------------------------
 
@@ -67,6 +78,13 @@ CREATE TABLE `userdata` (
   `token` text NOT NULL,
   `status` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `userdata`
+--
+
+INSERT INTO `userdata` (`uid`, `username`, `email`, `password`, `token`, `status`) VALUES
+('37327314-08ef-4a4d-b311-0183061b9182', 'haribalaji', 'haribalajiravi@gmail.com', 'password', 'b3cfac8f-cdb5-4b0b-84a5-b307a7376c32', '');
 
 --
 -- Indexes for dumped tables
@@ -109,7 +127,6 @@ ALTER TABLE `slampages`
 -- Constraints for table `slamwrites`
 --
 ALTER TABLE `slamwrites`
-  ADD CONSTRAINT `fk_spid` FOREIGN KEY (`spid`) REFERENCES `slampages` (`spid`) ON DELETE CASCADE,
   ADD CONSTRAINT `slamwrites_ibfk_1` FOREIGN KEY (`spid`) REFERENCES `slampages` (`spid`),
   ADD CONSTRAINT `slamwrites_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `userdata` (`uid`);
 COMMIT;

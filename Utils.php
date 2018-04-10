@@ -55,7 +55,7 @@ function isAuthenticated($token_fn,$conn_fn) {
 }
 
 function isSlamName($slamname_fn,$conn_fn) {
-    $sql = "SELECT * FROM slampages where slamname='$slamname_fn'";
+    $sql = "SELECT * FROM slampages where slamname='$slamname_fn' AND deletedat <> 1";
     $result = $conn_fn->query($sql);
     if ($result->num_rows > 0) {
        return true;
@@ -93,7 +93,7 @@ function getUsernameByUid($uid_fn,$conn_fn) {
 }
 
 function getContentByUid($uid_fn,$slamname_fn,$conn_fn) {
-    $sql = "SELECT spid,content FROM slampages WHERE uid='$uid_fn' and slamname='$slamname_fn'";
+    $sql = "SELECT spid,content FROM slampages WHERE uid='$uid_fn' and slamname='$slamname_fn' AND deletedat <> 1";
     $result = $conn_fn->query($sql);
     if ($result->num_rows > 0) {
         $data = null ;
@@ -107,7 +107,7 @@ function getContentByUid($uid_fn,$slamname_fn,$conn_fn) {
 }
 
 function isNewSlam($uid_fn,$slamname_fn,$conn_fn) {
-    $sql = "SELECT spid FROM slampages WHERE uid='$uid_fn' and slamname='$slamname_fn'";
+    $sql = "SELECT spid FROM slampages WHERE uid='$uid_fn' and slamname='$slamname_fn' AND deletedat <> 1";
     $result = $conn_fn->query($sql);
     if ($result->num_rows > 0) {
         return false;

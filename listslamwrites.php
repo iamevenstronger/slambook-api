@@ -22,7 +22,7 @@ if(!isAuthenticated($token,$conn)) {
     die();
 }
 
-$sql = "SELECT uid, swid, content FROM slamwrites WHERE spid='$spid'";
+$sql = "SELECT uid, swid, content FROM slamwrites WHERE spid='$spid' AND deletedat <> 1";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     $slamwrites = array();

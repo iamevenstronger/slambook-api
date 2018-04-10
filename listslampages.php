@@ -22,7 +22,7 @@ if(!isAuthenticated($token,$conn)) {
     die();
 }
 
-$sql = "SELECT * FROM slampages WHERE uid='$uid'";
+$sql = "SELECT * FROM slampages WHERE uid='$uid' AND deletedat <> 1";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     $slampages = array();
