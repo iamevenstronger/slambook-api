@@ -11,6 +11,31 @@ if(!isset($_GET['token']) || !isset($_GET['uid']) || !isset($_GET['spid']) || !i
     die();
 }
 
+
+if(strlen($_GET['slamname']) > 20) {
+    $resp["success"] = false ;
+    $resp["error_in"] = "slamname" ;
+    $resp["message"] = "String length exceeds!" ;
+    sendResponse($resp);
+    die(); 
+}
+
+if(strlen($_GET['slamdescription']) > 500) {
+    $resp["success"] = false ;
+    $resp["error_in"] = "slam description" ;
+    $resp["message"] = "String length exceeds!" ;
+    sendResponse($resp);
+    die(); 
+}
+
+if(strlen($_GET['content']) > 500) {
+    $resp["success"] = false ;
+    $resp["error_in"] = "content" ;
+    $resp["message"] = "String length exceeds!" ;
+    sendResponse($resp);
+    die(); 
+}
+
 if(!$_GET['slamname'] || !$_GET['slamdescription']) {
     $resp["success"] = false ;
     $resp["error_in"] = "keycontents" ;
@@ -18,6 +43,15 @@ if(!$_GET['slamname'] || !$_GET['slamdescription']) {
     sendResponse($resp);
     die();  
 }
+
+if(isKeyEmpty($content)) {
+    $resp["success"] = false ;
+    $resp["error_in"] = "key" ;
+    $resp["message"] = "Key contents empty!" ;
+    sendResponse($resp);
+    die();   
+}
+
 if(isInvalidString(filter_var($_GET['slamname'],FILTER_SANITIZE_STRING))){
     $resp["success"] = false ;
     $resp["error_in"] = "slamname" ;

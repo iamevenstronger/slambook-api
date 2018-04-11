@@ -51,8 +51,8 @@ if ($conn->query($sql) === TRUE) {
     sendResponse($resp);
 } else {
     $resp["success"] = false ;
-    $resp["error_in"] = "database" ;
-    $resp["message"] = "Error: " . $sql . "<br>" . $conn->error ;
+    $resp["error_in"] = "Internal" ;
+    $resp["message"] = "please check the content you are entered! (quote's not allowed)" ;
     sendResponse($resp);
     die();
 }

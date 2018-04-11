@@ -11,6 +11,22 @@ if(!isset($_GET['token']) || !isset($_GET['uid']) || !isset($_GET['content']) ||
     die();
 }
 
+if(strlen($_GET['slamname']) > 20) {
+    $resp["success"] = false ;
+    $resp["error_in"] = "slamname" ;
+    $resp["message"] = "String length exceeds!" ;
+    sendResponse($resp);
+    die(); 
+}
+
+if(strlen($_GET['slamdescription']) > 500) {
+    $resp["success"] = false ;
+    $resp["error_in"] = "slam description" ;
+    $resp["message"] = "String length exceeds!" ;
+    sendResponse($resp);
+    die(); 
+}
+
 if(!$_GET['slamname'] || !$_GET['slamdescription']) {
     $resp["success"] = false ;
     $resp["error_in"] = "keycontents" ;
@@ -18,6 +34,15 @@ if(!$_GET['slamname'] || !$_GET['slamdescription']) {
     sendResponse($resp);
     die();  
 }
+
+if(strlen($_GET['content']) > 500) {
+    $resp["success"] = false ;
+    $resp["error_in"] = "content" ;
+    $resp["message"] = "String length exceeds!" ;
+    sendResponse($resp);
+    die(); 
+}
+
 if(isInvalidString(filter_var($_GET['slamname'],FILTER_SANITIZE_STRING))){
     $resp["success"] = false ;
     $resp["error_in"] = "slamname" ;
@@ -62,6 +87,14 @@ if(!array_key_exists("customfields",$content)) {
     die();   
 }
 
+if(isKeyEmpty($content)) {
+    $resp["success"] = false ;
+    $resp["error_in"] = "key" ;
+    $resp["message"] = "Key contents empty!" ;
+    sendResponse($resp);
+    die();   
+}
+
 $spid = gen_uuid() ;
 $content = $_GET['content'] ;
 $sql = "INSERT INTO slampages (uid,spid,slamname,slamdescription,content) VALUES ('$uid','$spid', '$slamname', '$slamdescription', '$content')";
@@ -96,5 +129,15 @@ for ($i = 0; $i < $length; $i++) {
   $script_tags->item($i)->parentNode->removeChild($script_tags->item($i));
 }
  return $doc->saveHTML();
+}
+
+function isKeyEmpty($contents_fn) {
+    $arr = $contents_fn->customfields ;
+    for($i = 0 ; $i < count($arr) ; $i++) {
+        if(ctype_space($arr[$i]) || $arr[$i] == '') {
+            return true;
+        }
+    }
+    return false;
 }
 ?>
