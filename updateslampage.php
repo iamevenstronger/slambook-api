@@ -3,21 +3,12 @@
 require 'connection.php';
 require 'Utils.php';
 
-if(!isset($_GET['token']) || !isset($_GET['uid']) || !isset($_GET['spid']) || !isset($_GET['content']) || !isset($_GET['slamname']) || !isset($_GET['slamdescription'])) {
+if(!isset($_GET['token']) || !isset($_GET['uid']) || !isset($_GET['spid']) || !isset($_GET['content']) || !isset($_GET['slamdescription'])) {
     $resp["success"] = false ;
     $resp["error_in"] = "keycontents" ;
     $resp["message"] = "Enter All Credentials!" ;
     sendResponse($resp);
     die();
-}
-
-
-if(strlen($_GET['slamname']) > 20) {
-    $resp["success"] = false ;
-    $resp["error_in"] = "slamname" ;
-    $resp["message"] = "String length exceeds!" ;
-    sendResponse($resp);
-    die(); 
 }
 
 if(strlen($_GET['slamdescription']) > 500) {
@@ -36,7 +27,7 @@ if(strlen($_GET['content']) > 500) {
     die(); 
 }
 
-if(!$_GET['slamname'] || !$_GET['slamdescription']) {
+if(!$_GET['slamdescription']) {
     $resp["success"] = false ;
     $resp["error_in"] = "keycontents" ;
     $resp["message"] = "Enter All Credentials!" ;
@@ -44,26 +35,10 @@ if(!$_GET['slamname'] || !$_GET['slamdescription']) {
     die();  
 }
 
-if(isKeyEmpty($content)) {
-    $resp["success"] = false ;
-    $resp["error_in"] = "key" ;
-    $resp["message"] = "Key contents empty!" ;
-    sendResponse($resp);
-    die();   
-}
-
-if(isInvalidString(filter_var($_GET['slamname'],FILTER_SANITIZE_STRING))){
-    $resp["success"] = false ;
-    $resp["error_in"] = "slamname" ;
-    $resp["message"] = "slamname should'nt have space or special chars(/[\'\"^£$%&*()}{@#~?><>,|=+¬-]/)" ;
-    sendResponse($resp);
-    die();
-}
 $content = json_decode($_GET['content']);
 $uid = filter_var($_GET['uid'],FILTER_SANITIZE_STRING);
 $token = filter_var($_GET['token'],FILTER_SANITIZE_STRING);
-$slamdescription = stripScript($_GET['slamdescription']) ;
-$slamname = filter_var($_GET['slamname'],FILTER_SANITIZE_STRING) ;
+$slamdescription = stripScript($_GET['slamdescription']);
 $spid = filter_var($_GET['spid'],FILTER_SANITIZE_STRING);
 
 if(!isAuthenticated($token,$conn)) {
@@ -74,13 +49,6 @@ if(!isAuthenticated($token,$conn)) {
     die();
 }
 
-if(!isNewSlam($uid,$slamname,$conn)) {
-    $resp["success"] = false ;
-    $resp["error_in"] = "slamname" ;
-    $resp["message"] = "Slamname already exists!" ;
-    sendResponse($resp);
-    die();
-}
 if(!isLimitCustom($content->customfields)) {
     $resp["success"] = false ;
     $resp["error_in"] = "customfields" ;
@@ -97,12 +65,19 @@ if(!array_key_exists("customfields",$content)) {
     die();   
 }
 
+if(isKeyEmpty($content)) {
+    $resp["success"] = false ;
+    $resp["error_in"] = "key" ;
+    $resp["message"] = "Key contents empty!" ;
+    sendResponse($resp);
+    die();   
+}
+
 $content = $_GET['content'] ;
-$sql = "UPDATE slampages SET slamname='$slamname', slamdescription='$slamdescription' ,content='$content' WHERE uid='$uid' AND spid='$spid'";
+$sql = "UPDATE slampages SET slamdescription='$slamdescription' ,content='$content' WHERE uid='$uid' AND spid='$spid'";
 if ($conn->query($sql) === TRUE) {
     $resp["success"] = true ;
     $resp["spid"] = $spid ;
-    $resp["slamname"] = $slamname ;
     $resp["slamdescription"] = $slamdescription ;
     $resp["content"] = json_decode($content) ;
     $resp["uid"] = $uid ;
@@ -130,5 +105,15 @@ for ($i = 0; $i < $length; $i++) {
   $script_tags->item($i)->parentNode->removeChild($script_tags->item($i));
 }
  return $doc->saveHTML();
+}
+
+function isKeyEmpty($contents_fn) {
+    $arr = $contents_fn->customfields ;
+    for($i = 0 ; $i < count($arr) ; $i++) {
+        if(ctype_space($arr[$i]) || $arr[$i] == '') {
+            return true;
+        }
+    }
+    return false;
 }
 ?>
