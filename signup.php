@@ -3,7 +3,7 @@
 require 'connection.php';
 require 'Utils.php';
 
-if($_GET['username'] != 'true') {
+if($_GET['terms'] != 'true') {
     $resp["success"] = false ;
     $resp["error_in"] = "terms and conditions" ;
     $resp["message"] = "Please read and accept terms&conditions before you signup!" ;
@@ -49,7 +49,7 @@ $password = filter_var($_GET['password'],FILTER_SANITIZE_STRING);
 
 $token_uuid = gen_uuid() ;
 $uid = gen_uuid() ;
-$sql = "INSERT INTO userdata (uid,username,password,email,token,status) VALUES ('$uid','$username', '$password', '$email', '$token_uuid','')";
+$sql = "INSERT INTO userdata (uid,username,password,email,token,status,terms_conditions) VALUES ('$uid','$username', '$password', '$email', '$token_uuid','',1)";
 if ($conn->query($sql) === TRUE) {
     setcookie(
         "slam_token",
