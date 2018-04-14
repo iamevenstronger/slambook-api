@@ -3,6 +3,14 @@
 require 'connection.php';
 require 'Utils.php';
 
+if($_GET['username'] != 'true') {
+    $resp["success"] = false ;
+    $resp["error_in"] = "terms and conditions" ;
+    $resp["message"] = "Please read and accept terms&conditions before you signup!" ;
+    sendResponse($resp);
+    die();
+}
+
 if(!isset($_GET['username']) || strlen(filter_var($_GET['username'],FILTER_SANITIZE_STRING))<4 || strlen(filter_var($_GET['username'],FILTER_SANITIZE_STRING))>32 || !isNewUser(filter_var($_GET['username'],FILTER_SANITIZE_STRING),$conn)){
     $resp["success"] = false ;
     $resp["error_in"] = "username" ;
